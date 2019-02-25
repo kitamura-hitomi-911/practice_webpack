@@ -3,10 +3,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
 	devtool: 'source-map',
-	entry: ['./src/js/common.js'],
+	entry: {
+		common:'./src/js/common.js',
+		style:'./src/sass/test.scss'
+	},
 	output: {
 		path: `${__dirname}/dist`,
-		filename: 'js/common.js'
+		filename: 'js/[name].js'
 	},
 	resolve: {
 		alias: {
@@ -17,10 +20,15 @@ module.exports = {
 		rules: [
 			{
 				test: /\.(sa|sc|c)ss$/,
-				exclude: /node_modules/,
+				exclude: /(node_modules)/,
 				use: [
 					MiniCssExtractPlugin.loader,
-					'css-loader',
+					{
+						loader:'css-loader',
+						options: {
+							url: false // url()を変換しない
+						}
+					},
 					'sass-loader'
 				],
 			},
